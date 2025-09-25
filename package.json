@@ -1,0 +1,68 @@
+{
+  "name": "@varienos/device-detector-js",
+  "version": "1.0.0",
+  "description": "A lightweight JavaScript library for detecting device types (mobile, tablet, desktop)",
+  "main": "dist/device-detector.min.js",
+  "module": "src/device-detector.js",
+  "types": "types/device-detector.d.ts",
+  "files": [
+    "src/",
+    "dist/",
+    "types/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "npm run minify",
+    "minify": "terser src/device-detector.js -o dist/device-detector.min.js --compress --mangle --source-map --comments '/^\\*!|@preserve|@license|@cc_on/i'",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint src/ --ext .js",
+    "lint:fix": "eslint src/ --ext .js --fix",
+    "dev": "http-server examples/ -o",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/varienos/device-detector.git"
+  },
+  "keywords": [
+    "device",
+    "detector",
+    "mobile",
+    "tablet",
+    "desktop",
+    "user-agent",
+    "responsive",
+    "javascript",
+    "browser",
+    "detection"
+  ],
+  "author": "Varien <your-email@example.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/varienos/device-detector/issues"
+  },
+  "homepage": "https://github.com/varienos/device-detector#readme",
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "http-server": "^14.0.0",
+    "jest": "^29.0.0",
+    "jest-environment-jsdom": "^29.0.0",
+    "terser": "^5.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "jest": {
+    "testEnvironment": "jsdom",
+    "testMatch": [
+      "**/test/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
+  }
+}

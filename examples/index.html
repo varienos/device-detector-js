@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Detector - Example</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .result {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .code {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .mobile { background: #28a745; }
+        .tablet { background: #ffc107; color: #000; }
+        .desktop { background: #17a2b8; }
+    </style>
+</head>
+<body>
+    <h1>📱 Device Detector - Live Example</h1>
+
+    <div class="card">
+        <h2>Current Device Detection</h2>
+        <div id="current-device" class="result">
+            Loading...
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Try Different Methods</h2>
+        <button onclick="testMethod('isMobile')">Test isMobile()</button>
+        <button onclick="testMethod('isTablet')">Test isTablet()</button>
+        <button onclick="testMethod('isDesktop')">Test isDesktop()</button>
+        <button onclick="testMethod('isAndroid')">Test isAndroid()</button>
+        <button onclick="testMethod('isIOS')">Test isIOS()</button>
+        <button onclick="testMethod('getDeviceType')">Test getDeviceType()</button>
+        <button onclick="testMethod('getDeviceInfo')">Test getDeviceInfo()</button>
+
+        <div id="test-result" class="result" style="display: none;">
+            <strong>Result:</strong> <span id="test-output"></span>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Code Examples</h2>
+
+        <h3>Basic Usage</h3>
+        <div class="code">
+// Create detector instance
+const detector = new DeviceDetector();
+
+// Check device type
+if (detector.isMobile()) {
+    console.log('This is a mobile device!');
+}
+
+// Get device type as string
+console.log('Device type:', detector.getDeviceType());
+        </div>
+
+        <h3>Complete Device Information</h3>
+        <div class="code">
+const detector = new DeviceDetector();
+const info = detector.getDeviceInfo();
+
+console.log(info);
+// Output example:
+// {
+//   isMobile: false,
+//   isTablet: true,
+//   isDesktop: false,
+//   isAndroid: false,
+//   isIOS: true,
+//   isWindowsPhone: false,
+//   deviceType: 'tablet',
+//   userAgent: 'Mozilla/5.0...'
+// }
+        </div>
+
+        <h3>Responsive Design Application</h3>
+        <div class="code">
+const detector = new DeviceDetector();
+
+// Apply different CSS classes
+if (detector.isMobile()) {
+    document.body.classList.add('mobile-layout');
+} else if (detector.isTablet()) {
+    document.body.classList.add('tablet-layout');
+} else {
+    document.body.classList.add('desktop-layout');
+}
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Current User Agent</h2>
+        <div class="code" id="user-agent">
+            Loading...
+        </div>
+    </div>
+
+    <script src="../dist/device-detector.min.js"></script>
+    <script>
+        // Initialize detector
+        const detector = new DeviceDetector();
+
+        // Display current device info
+        function updateCurrentDevice() {
+            const info = detector.getDeviceInfo();
+            const deviceClass = info.deviceType;
+
+            document.getElementById('current-device').innerHTML = `
+                <div style="background: ${getDeviceColor(info.deviceType)}; color: white; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                    <strong>Device Type: ${info.deviceType.toUpperCase()}</strong>
+                </div>
+                <strong>Detection Results:</strong><br>
+                • Mobile: ${info.isMobile ? '✅' : '❌'}<br>
+                • Tablet: ${info.isTablet ? '✅' : '❌'}<br>
+                • Desktop: ${info.isDesktop ? '✅' : '❌'}<br>
+                • Android: ${info.isAndroid ? '✅' : '❌'}<br>
+                • iOS: ${info.isIOS ? '✅' : '❌'}<br>
+                • Windows Phone: ${info.isWindowsPhone ? '✅' : '❌'}
+            `;
+        }
+
+        // Get color for device type
+        function getDeviceColor(type) {
+            switch(type) {
+                case 'mobile': return '#28a745';
+                case 'tablet': return '#ffc107';
+                case 'desktop': return '#17a2b8';
+                default: return '#6c757d';
+            }
+        }
+
+        // Test individual methods
+        function testMethod(methodName) {
+            let result;
+
+            try {
+                if (methodName === 'getDeviceInfo') {
+                    result = JSON.stringify(detector[methodName](), null, 2);
+                } else {
+                    result = detector[methodName]();
+                }
+
+                document.getElementById('test-output').innerHTML = `
+                    <strong>${methodName}():</strong> <code>${result}</code>
+                `;
+                document.getElementById('test-result').style.display = 'block';
+            } catch (error) {
+                document.getElementById('test-output').innerHTML = `
+                    <strong>Error:</strong> ${error.message}
+                `;
+                document.getElementById('test-result').style.display = 'block';
+            }
+        }
+
+        // Display user agent
+        function updateUserAgent() {
+            document.getElementById('user-agent').textContent = navigator.userAgent;
+        }
+
+        // Initialize page
+        updateCurrentDevice();
+        updateUserAgent();
+
+        // Add responsive behavior
+        document.body.classList.add(detector.getDeviceType() + '-layout');
+    </script>
+</body>
+</html>
