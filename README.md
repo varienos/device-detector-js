@@ -193,24 +193,6 @@ npm run lint
 npm run build
 ```
 
-## Project Structure
-
-```
-device-detector/
-├── src/
-│   └── device-detector.js     # Source code
-├── dist/
-│   └── device-detector.min.js # Minified build
-├── test/
-│   └── device-detector.test.js # Tests
-├── examples/
-│   └── index.html             # Example usage
-├── types/
-│   └── device-detector.d.ts   # TypeScript definitions
-└── docs/
-    └── api.md                 # API documentation
-```
-
 ## Contributing
 
 1. Fork the repository
