@@ -4,6 +4,21 @@
 
 const DeviceDetector = require('../src/device-detector.js');
 
+const setNavigatorProp = (prop, value) => {
+  Object.defineProperty(navigator, prop, {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value
+  });
+};
+
+const resetNavigatorProp = (prop) => {
+  if (Object.prototype.hasOwnProperty.call(navigator, prop)) {
+    delete navigator[prop];
+  }
+};
+
 describe('DeviceDetector', () => {
   let detector;
 
@@ -11,12 +26,14 @@ describe('DeviceDetector', () => {
     detector = new DeviceDetector();
   });
 
+  afterEach(() => {
+    resetNavigatorProp('userAgent');
+    resetNavigatorProp('userAgentData');
+  });
+
   describe('Android Detection', () => {
     test('should detect Android devices', () => {
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: 'Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36'
-      });
+      setNavigatorProp('userAgent', 'Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36');
 
       detector = new DeviceDetector();
       expect(detector.isAndroid()).toBe(true);
@@ -26,10 +43,7 @@ describe('DeviceDetector', () => {
 
   describe('iOS Detection', () => {
     test('should detect iPhone', () => {
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15'
-      });
+      setNavigatorProp('userAgent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15');
 
       detector = new DeviceDetector();
       expect(detector.isIOS()).toBe(true);
@@ -37,10 +51,7 @@ describe('DeviceDetector', () => {
     });
 
     test('should detect iPad', () => {
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: 'Mozilla/5.0 (iPad; CPU OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15'
-      });
+      setNavigatorProp('userAgent', 'Mozilla/5.0 (iPad; CPU OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15');
 
       detector = new DeviceDetector();
       expect(detector.isIOS()).toBe(true);
@@ -50,10 +61,7 @@ describe('DeviceDetector', () => {
 
   describe('Desktop Detection', () => {
     test('should detect desktop devices', () => {
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      });
+      setNavigatorProp('userAgent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
 
       detector = new DeviceDetector();
       expect(detector.isDesktop()).toBe(true);
@@ -64,42 +72,50 @@ describe('DeviceDetector', () => {
 
   describe('Device Type Detection', () => {
     test('should return correct device type for mobile', () => {
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15'
-      });
+      setNavigatorProp('userAgent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15');
 
       detector = new DeviceDetector();
       expect(detector.getDeviceType()).toBe('mobile');
     });
 
     test('should return correct device type for tablet', () => {
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: 'Mozilla/5.0 (iPad; CPU OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15'
-      });
+      setNavigatorProp('userAgent', 'Mozilla/5.0 (iPad; CPU OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15');
 
       detector = new DeviceDetector();
       expect(detector.getDeviceType()).toBe('tablet');
     });
 
     test('should return correct device type for desktop', () => {
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      });
+      setNavigatorProp('userAgent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
 
       detector = new DeviceDetector();
       expect(detector.getDeviceType()).toBe('desktop');
     });
   });
 
+  describe('User-Agent Client Hints Integration', () => {
+    test('should treat userAgentData.mobile as authoritative for mobile devices', () => {
+      setNavigatorProp('userAgentData', { mobile: true, platform: 'Android', brands: [] });
+      setNavigatorProp('userAgent', '');
+
+      detector = new DeviceDetector();
+      expect(detector.isMobile()).toBe(true);
+      expect(detector.isAndroid()).toBe(true);
+    });
+
+    test('should remain desktop when userAgentData.mobile is false and UA is desktop', () => {
+      setNavigatorProp('userAgentData', { mobile: false, platform: 'Windows', brands: [] });
+      setNavigatorProp('userAgent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+
+      detector = new DeviceDetector();
+      expect(detector.isMobile()).toBe(false);
+      expect(detector.isDesktop()).toBe(true);
+    });
+  });
+
   describe('Device Info', () => {
     test('should return complete device information', () => {
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15'
-      });
+      setNavigatorProp('userAgent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15');
 
       detector = new DeviceDetector();
       const info = detector.getDeviceInfo();

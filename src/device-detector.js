@@ -1,13 +1,23 @@
 /**
  * Device Detector - A lightweight JavaScript library for detecting device types
- * @version 1.0.0
+ * @version 1.0.1
  * @author Varien
  * @license MIT
  */
 
 class DeviceDetector {
   constructor() {
-    this.userAgent = navigator.userAgent || '';
+    const nav = typeof navigator !== 'undefined' ? navigator : {};
+    this.userAgentData = nav.userAgentData || null;
+    this.userAgent = typeof nav.userAgent === 'string' ? nav.userAgent : '';
+  }
+
+  hasUserAgentDataPlatform(pattern) {
+    return Boolean(
+      this.userAgentData &&
+      typeof this.userAgentData.platform === 'string' &&
+      pattern.test(this.userAgentData.platform)
+    );
   }
 
   /**
@@ -15,6 +25,10 @@ class DeviceDetector {
    * @returns {boolean} True if device is mobile
    */
   isMobile() {
+    if (this.userAgentData && this.userAgentData.mobile === true) {
+      return true;
+    }
+
     return this.isAndroid() || this.isIOS() || this.isWindowsPhone() || this.isOtherMobile();
   }
 
@@ -23,6 +37,10 @@ class DeviceDetector {
    * @returns {boolean} True if device is Android
    */
   isAndroid() {
+    if (this.hasUserAgentDataPlatform(/android/i)) {
+      return true;
+    }
+
     return /Android/i.test(this.userAgent);
   }
 
@@ -31,12 +49,17 @@ class DeviceDetector {
    * @returns {boolean} True if device is iOS
    */
   isIOS() {
-    return /iPhone|iPad|iPod/i.test(this.userAgent) && !window.MSStream;
+    if (this.hasUserAgentDataPlatform(/ios|ipad|iphone/i)) {
+      return true;
+    }
+
+    return /iPhone|iPad|iPod/i.test(this.userAgent) && !(typeof window !== 'undefined' && window.MSStream);
   }
 
   /**
    * Check if the device is Windows Phone
    * @returns {boolean} True if device is Windows Phone
+   * @deprecated Windows Phone reached end of support; retained for backwards compatibility.
    */
   isWindowsPhone() {
     return /Windows Phone|IEMobile/i.test(this.userAgent);
@@ -72,8 +95,8 @@ class DeviceDetector {
    * @returns {string} Device type: 'mobile', 'tablet', or 'desktop'
    */
   getDeviceType() {
-    if (this.isMobile()) return 'mobile';
     if (this.isTablet()) return 'tablet';
+    if (this.isMobile()) return 'mobile';
     return 'desktop';
   }
 

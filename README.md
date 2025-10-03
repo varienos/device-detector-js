@@ -13,6 +13,7 @@ A lightweight, fast, and reliable JavaScript library for detecting device types 
 - **Accurate**: Detects mobile, tablet, and desktop devices
 - **Flexible**: Works in browser, Node.js, and AMD environments
 - **Comprehensive**: Supports iOS, Android, Windows Phone, and more
+- **Client Hint aware**: Leverages `navigator.userAgentData` when available with legacy fallbacks
 - **Modern**: ES6+ class-based architecture with backward compatibility
 
 ## Installation
@@ -160,6 +161,12 @@ analytics.track('page_view', {
 - Edge (all versions)
 - Internet Explorer 9+
 - Mobile browsers (iOS Safari, Chrome Mobile, etc.)
+
+## Detection Notes
+
+- The library consults `navigator.userAgentData` (User-Agent Client Hints) when the browser exposes it, then falls back to classic user-agent parsing. Results depend on what the browser chooses to share.
+- User-agent strings are being reduced over time; keep detection logic as a progressive enhancement rather than a security boundary.
+- `isWindowsPhone()` stays available for existing consumers, but Windows Phone is officially unsupported. Monitor analytics before relying on it in new features.
 
 ## Testing
 
