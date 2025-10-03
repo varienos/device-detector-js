@@ -1,6 +1,6 @@
 {
   "name": "@varienos/device-detector-js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A lightweight JavaScript library for detecting device types (mobile, tablet, desktop)",
   "main": "dist/device-detector.min.js",
   "module": "src/device-detector.js",

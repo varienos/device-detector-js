@@ -1,6 +1,6 @@
 /**
  * Device Detector - A lightweight JavaScript library for detecting device types
- * @version 1.0.1
+ * @version 1.0.2
  * @author Varien
  * @license MIT
  */
