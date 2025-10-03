@@ -4,8 +4,8 @@
 
 | Version | Supported |
 | --- | --- |
-| 1.x | ✅ Active |
-| < 1.0.0 prereleases | ❌ Not supported |
+| 1.x | Yes (active) |
+| < 1.0.0 prereleases | No |
 
 Always upgrade to the latest 1.x release to receive fixes.
 
