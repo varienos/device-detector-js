@@ -28,9 +28,6 @@ npm install @varienos/device-detector-js
 <script src="https://unpkg.com/@varienos/device-detector-js@latest/dist/device-detector.min.js"></script>
 ```
 
-### Download
-Download the latest release from [GitHub releases](https://github.com/varienos/device-detector/releases)
-
 ## Usage
 
 ### Browser (Global)
@@ -155,12 +152,11 @@ analytics.track('page_view', {
 
 ## Browser Support
 
-- Chrome (all versions)
-- Firefox (all versions)
-- Safari (all versions)
-- Edge (all versions)
-- Internet Explorer 9+
-- Mobile browsers (iOS Safari, Chrome Mobile, etc.)
+- Chrome, Edge, and other Chromium-based browsers (recent releases)
+- Firefox (recent releases)
+- Safari on macOS and iOS
+- Legacy Internet Explorer 11 (no official guarantee beyond basic UA checks)
+- Mobile browsers that still expose a user-agent string
 
 ## Detection Notes
 
@@ -190,21 +186,15 @@ npm test -- --coverage
 # Install dependencies
 npm install
 
-# Start development server
+# Start the live example server
 npm run dev
 
 # Lint code
 npm run lint
 
-# Build minified version
+# Build minified bundle
 npm run build
 ```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
