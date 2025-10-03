@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/varienos/device-detector-js/security/advisories/new
+    about: Please use the private security advisory workflow for vulnerabilities.
