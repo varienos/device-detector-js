@@ -4,7 +4,7 @@ A lightweight, fast, and reliable JavaScript library for detecting device types 
 
 [![npm version](https://badge.fury.io/js/@varienos%2Fdevice-detector-js.svg)](https://badge.fury.io/js/@varienos%2Fdevice-detector-js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.org/varienos/device-detector.svg?branch=main)](https://travis-ci.org/varienos/device-detector)
+[![Build Status](https://travis-ci.org/varienos/device-detector-js.svg?branch=main)](https://travis-ci.org/varienos/device-detector-js)
 
 ## Features
 

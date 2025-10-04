@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/varienos/device-detector.git"
+    "url": "git+https://github.com/varienos/device-detector-js.git"
   },
   "keywords": [
     "device",
@@ -41,9 +41,9 @@
   "author": "Varien <your-email@example.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/varienos/device-detector/issues"
+    "url": "https://github.com/varienos/device-detector-js/issues"
   },
-  "homepage": "https://github.com/varienos/device-detector#readme",
+  "homepage": "https://github.com/varienos/device-detector-js#readme",
   "devDependencies": {
     "eslint": "^8.0.0",
     "http-server": "^14.0.0",
